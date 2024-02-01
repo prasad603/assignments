@@ -1,0 +1,46 @@
+const axios = require('axios');
+const { expect } = require('chai');
+
+describe('StackExchange Badges API Tests', () =>
+{
+  const apiUrl = 'https://api.stackexchange.com/2.3/badges';
+  describe('calculateDistance', () => {
+    // Positive test case
+    it('should calculate the distance between two points accurately', () =>
+   {
+        // Define coordinates for two points
+        const latitudeTo = 40.7128; // New York City
+        const longitudeTo = -74.0060;
+        const latitudeFrom = 34.0522; // Los Angeles
+        const longitudeFrom = -118.2437;
+       
+        // Call the function and expect the result to be within a certain range (since it's an approximation)
+        const distance = calculateDistance(latitudeTo, longitudeTo, latitudeFrom, longitudeFrom);
+        expect(distance).to.be.closeTo(3933.24, 10); // Approximate distance between New York and Los Angeles in miles
+    });
+
+    // Negative test case
+    it('should return NaN if any of the inputs is not a number', () => {
+        const latitudeTo = 'invalid'; // Invalid latitude
+        const longitudeTo = -74.0060;
+        const latitudeFrom = 34.0522;
+        const longitudeFrom = -118.2437;
+       
+        // Call the function with invalid latitude and expect NaN
+        const distance = calculateDistance(latitudeTo, longitudeTo, latitudeFrom, longitudeFrom);
+        expect(distance).to.be.NaN;
+    });
+
+    // Corner case
+    it('should return 0 if both points are the same', () => {
+        const latitudeTo = 40.7128; // New York City
+        const longitudeTo = -74.0060;
+        const latitudeFrom = 40.7128;
+        const longitudeFrom = -74.0060;
+       
+        // Call the function with identical points and expect the distance to be 0
+        const distance = calculateDistance(latitudeTo, longitudeTo, latitudeFrom, longitudeFrom);
+        expect(distance).to.equal(0);
+    });
+ 
+});
